@@ -24,7 +24,7 @@ def colour_to_ints(colour_in):
         int(colour_in[4:6], 16),
     )
 
-def closest_colour(colour_in, small=False):
+def closest_colour(colour_in, full_colour=False):
     """
     Find the colour from the colour map that is closest to the input
 
@@ -36,10 +36,10 @@ def closest_colour(colour_in, small=False):
     min_distance = None
     chosen_colour = None
 
-    if small:
-        colours = COLOURS[:16]
-    else:
+    if full_colour:
         colours = COLOURS
+    else:
+        colours = COLOURS[:16]
 
     for i, colour in enumerate(colours):
         colour = colour_to_ints(colour)
@@ -76,11 +76,10 @@ def print_help():
     print("""
 Usage: shue [-16|-256] <colour>
 
-  -16    Specify a 16-colour terminal
-  -256    Specify a 16-colour terminal
+-16     Specify a 16-colour terminal (default)
+-256    Specify a 16-colour terminal
 
 <colour> must be in one of the following formats:
-
   rgb
   rrggbb
   #rgb
@@ -96,6 +95,6 @@ if __name__ == "__main__":
 
     colour_in = format_colour(colour_in)
 
-    colour_out = closest_colour(colour_in, small=sys.argv[1]=="-16")
+    colour_out = closest_colour(colour_in, full_colour=sys.argv[1]=="-256")
 
     print(colour_out)
