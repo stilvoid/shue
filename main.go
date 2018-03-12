@@ -1,61 +1,75 @@
 package main
 
-import "fmt"
-import "log"
-import "github.com/lucasb-eyer/go-colorful"
+import (
+    "os"
+    "strings"
+    "flag"
+    "github.com/lucasb-eyer/go-colorful"
+    "log"
+    "fmt"
+    "io/ioutil"
+)
+
+var lighten *int
+var invert  *bool
+
+func printUsage() {
+    fmt.Println("Usage: shue [OPTIONS] FORMAT")
+    fmt.Println()
+    flag.PrintDefaults()
+    fmt.Println()
+}
+
+func init() {
+    flag.Usage = printUsage
+    lighten = flag.Int("l", 100, "Percentage to lighten by")
+    invert = flag.Bool("i", false, "Invert the colour")
+}
 
 func main() {
-    var color colorful.Color
-    var output string
-    var err error
+    flag.Parse()
 
-    // #ff804d
-    pairs := [][]string {
-        {"hex", "#f85"},
-        {"hex", "#ff804d"},
-        {"rgb", "rgb(1.0, 0.5, 0.3)"},
-        {"rgb", "rgb(255, 127, 77)"},
-        {"hsv", "hsv(17.142857, 0.700000, 1.000000)"},
-        {"hsv", "hsv(17, 0, 1)"},
-        {"rgb", "rgb(1, 0, 0)"},
+    if flag.NArg() != 1 {
+        printUsage()
+        os.Exit(1)
     }
 
-    formats := []string {
-        "hex",
-        "h3x",
-        "rgb",
-        "rgb256",
-        "hsv",
+    formatter, ok := formatters[flag.Arg(0)]
+    if !ok {
+        log.Fatalf("Unknown formatter: %s\n", flag.Arg(0))
     }
 
-    for _, pair := range(pairs) {
-        name, input := pair[0], pair[1]
+    bytes, err := ioutil.ReadAll(os.Stdin)
+    if err != nil {
+        log.Fatal(err)
+    }
 
-        fmt.Printf("%s: %s ->\n", name, input)
+    input := strings.TrimSpace(string(bytes))
 
-        parser, ok := parsers[name]
-        if !ok {
-            log.Fatal(fmt.Errorf("Parser does not exist: %s\n", name))
-        }
-
-        color, err = parser(input)
+    for _, parser := range(parsers) {
+        color, err := parser(input)
         if err != nil {
-            log.Fatal(err)
+            continue
         }
 
-        fmt.Printf("%#v\n", color)
+        if *invert {
+            h, s, v := color.Hsv()
+            h = h + 180 % 360
 
-        for _, format := range(formats) {
-            formatter, ok := formatters[format]
-            if !ok {
-                log.Fatal(fmt.Errorf("Formatter does not exist: %s\n", format))
-            }
-
-            output = formatter(color)
-
-            fmt.Printf("  %s: %s\n", format, output)
+            color = colorful.Hsv(h, s, v)
         }
 
-        fmt.Printf("\n")
+        if *lighten != 100 {
+            h, s, v := color.Hsv()
+            v = v * (float64(*lighten)/100)
+
+            color = colorful.Hsv(h, s, v)
+        }
+
+        fmt.Println(formatter(color))
+        os.Exit(0)
     }
+
+    fmt.Println("DEAD")
+    os.Exit(1)
 }

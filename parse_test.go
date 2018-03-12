@@ -10,10 +10,15 @@ func TestParse(t *testing.T) {
     expected := colorful.Color{1, 0.5, 0}
 
     pairs := [][]string {
-        {"hex", "#f80"},
+        {"h3x", "f80"},
+        {"h3x", "#f80"},
+        {"hex", "ff8800"},
         {"hex", "#ff8800"},
-        {"rgb", "rgb(1.0, 0.5, 0)"},
+        {"rgb", "255 128 0"},
+        {"rgb", "255, 128, 0"},
+        {"rgb", "rgb(255 128 0)"},
         {"rgb", "rgb(255, 128, 0)"},
+        {"rgb", "rgb(255,128,0)"},
     }
 
     for _, pair := range(pairs) {
@@ -38,7 +43,7 @@ func TestParse(t *testing.T) {
         dist := (rDist + gDist + bDist) / 3.0
 
         if dist > 1 {
-            t.Errorf("unexpected: %v\n", actual)
+            t.Errorf("%s -> unexpected: %v\n", input, actual)
         }
     }
 }

@@ -1,5 +1,6 @@
 package main
 
+import "math"
 import "fmt"
 import "github.com/lucasb-eyer/go-colorful"
 
@@ -11,35 +12,33 @@ func init() {
         "hex": formatHex,
         "h3x": formatH3x,
         "rgb": formatRgb,
-        "rgb256": formatRgb256,
-        "hsv": formatHsv,
     }
 }
 
-func formatHex(color colorful.Color) string {
-    return fmt.Sprintf("%s", color.Hex())
+func convert(in, factor float64) int {
+    return int(math.Max(math.Min(in * factor + 0.5, 255), 0))
 }
 
 func formatH3x(color colorful.Color) string {
-    r := uint8(color.R*15.0+0.5)
-    g := uint8(color.G*15.0+0.5)
-    b := uint8(color.B*15.0+0.5)
+    r := convert(color.R, 15)
+    g := convert(color.G, 15)
+    b := convert(color.B, 15)
 
     return fmt.Sprintf("#%x%x%x", r, g, b)
 }
 
-func formatRgb(color colorful.Color) string {
-    return fmt.Sprintf("rgb(%f, %f, %f)", color.R, color.G, color.B)
+func formatHex(color colorful.Color) string {
+    r := convert(color.R, 255)
+    g := convert(color.G, 255)
+    b := convert(color.B, 255)
+
+    return fmt.Sprintf("#%02x%02x%02x", r, g, b)
 }
 
-func formatRgb256(color colorful.Color) string {
-    r, g, b := color.RGB255()
+func formatRgb(color colorful.Color) string {
+    r := convert(color.R, 255)
+    g := convert(color.G, 255)
+    b := convert(color.B, 255)
 
     return fmt.Sprintf("rgb(%d, %d, %d)", r, g, b)
-}
-
-func formatHsv(color colorful.Color) string {
-    h, s, v := color.Hsv()
-
-    return fmt.Sprintf("hsv(%f, %f, %f)", h, s, v)
 }
