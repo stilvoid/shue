@@ -16,7 +16,7 @@ func init() {
 }
 
 func convert(in, factor float64) int {
-    return int(math.Max(math.Min(in * factor + 0.5, 255), 0))
+    return int(math.Max(math.Min(in * factor + 0.5, factor), 0))
 }
 
 func formatH3x(color colorful.Color) string {
