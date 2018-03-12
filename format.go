@@ -1,17 +1,38 @@
 package main
 
-import "math"
-import "fmt"
-import "github.com/lucasb-eyer/go-colorful"
+import (
+    "math"
+    "fmt"
+    "sort"
+    "strings"
+    "github.com/lucasb-eyer/go-colorful"
+)
 
 type formatter func(colorful.Color)string
 var formatters map[string]formatter
+var formats []string
 
 func init() {
     formatters = map[string]formatter {
         "hex": formatHex,
         "h3x": formatH3x,
         "rgb": formatRgb,
+    }
+
+    formats = make([]string, 0, len(formatters))
+    for format := range(formatters) {
+        formats = append(formats, format)
+    }
+    sort.Strings(formats)
+
+    formatters["all"] = func(color colorful.Color) string {
+        outputs := make([]string, 0, len(formats))
+
+        for _, format := range(formats) {
+            outputs = append(outputs, formatters[format](color))
+        }
+
+        return strings.Join(outputs, "\n")
     }
 }
 

@@ -12,6 +12,7 @@ func TestFormat(t *testing.T) {
         {"h3x", "#f85"},
         {"hex", "#ff804d"},
         {"rgb", "rgb(255, 128, 77)"},
+        {"all", "#f85\n#ff804d\nrgb(255, 128, 77)"},
     }
 
     for _, pair := range(cases) {
