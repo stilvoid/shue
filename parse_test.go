@@ -9,28 +9,20 @@ import (
 func TestParse(t *testing.T) {
     expected := colorful.Color{1, 0.5, 0}
 
-    pairs := [][]string {
-        {"h3x", "f80"},
-        {"h3x", "#f80"},
-        {"hex", "ff8800"},
-        {"hex", "#ff8800"},
-        {"rgb", "255 128 0"},
-        {"rgb", "255, 128, 0"},
-        {"rgb", "rgb(255 128 0)"},
-        {"rgb", "rgb(255, 128, 0)"},
-        {"rgb", "rgb(255,128,0)"},
+    pairs := []string {
+        "f80",
+        "#f80",
+        "ff8800",
+        "#ff8800",
+        "255 128 0",
+        "255, 128, 0",
+        "rgb(255 128 0)",
+        "rgb(255, 128, 0)",
+        "rgb(255,128,0)",
     }
 
-    for _, pair := range(pairs) {
-        format, input := pair[0], pair[1]
-
-        parser, ok := parsers[format]
-        if !ok {
-            t.Errorf("Missing parser: %s\n", format)
-            break
-        }
-
-        actual, err := parser(input)
+    for _, input := range(pairs) {
+        actual, err := parse(input)
         if err != nil {
             t.Error(err)
             break
