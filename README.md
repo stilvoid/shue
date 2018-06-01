@@ -34,3 +34,31 @@ A command line tool for modifying and converting colour values for use with CSS 
 Run `go build`.
 
 Or you can download a binary from the [releases](https://github.com/stilvoid/shue/releases) page.
+
+## Examples
+
+Converting a colour to a specific format:
+
+    $ shue -f rgb ff8800
+    rgb(255, 136, 0)
+
+Inverting a colour:
+
+    $ shue -i ff8800
+    #07f
+    #0077ff
+    rgb(0, 119, 255)
+
+Lightening a colour:
+
+    $ shue -l 200 884400
+    #f80
+    #ff8800
+    rgb(255, 136, 0)
+
+Darkening a colour:
+
+    $ shue -l 50 884400
+    #420
+    #442200
+    rgb(68, 34, 0)
