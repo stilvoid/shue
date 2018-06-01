@@ -28,3 +28,9 @@ A command line tool for modifying and converting colour values for use with CSS 
     Options:
       -l PERCENT    Lighten COLOUR by PERCENT% before converting to FORMAT
       -i            Invert COLOUR before converting to FORMAT
+
+## Building
+
+Run `go build`.
+
+Or you can download a binary from the [releases](https://github.com/stilvoid/shue/releases) page.
