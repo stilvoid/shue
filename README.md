@@ -40,7 +40,7 @@ or darken a colour by specifying a value below 100.
 If you specify --lighten and --invert, inversion takes place _after_ lightening
 
 Usage:
-  shue [COLOUR] [flags]
+  shue COLOUR [flags]
 
 Flags:
   -f, --format string   Output format. See --help for details (default "all")

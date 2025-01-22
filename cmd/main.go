@@ -23,7 +23,7 @@ func init() {
 }
 
 var rootCmd = &cobra.Command{
-	Use:   "shue [COLOUR]",
+	Use:   "shue COLOUR",
 	Short: "Shue converts and modifies colour values for use in CSS etc.",
 	Long: `The following formats can be read and output by shue:
 
