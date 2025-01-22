@@ -68,7 +68,7 @@ func ExampleColour_Lighten_and_invert() {
 	// #cccccc
 }
 
-func Example_No_Change() {
+func Example_no_change() {
 	exec("123", "hex3", 100, false)
 	exec("1234", "hex4", 100, false)
 	exec("123456", "hex6", 100, false)
