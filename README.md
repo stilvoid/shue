@@ -2,63 +2,56 @@
 
 A command line tool for modifying and converting colour values for use with CSS etc.
 
-## Supported formats
+## Installing
 
-* Six-digit hex, e.g. `#ff8000`
-* Three-digit hex, e.g. `#f80`
-* Three-part RGB, e.g. `rgb(255, 128, 0)`
+`brew install stilvoid/tools/shue`
 
-## Supported operations
+_or_
 
-* Lighten n%
-* Set value
-* Invert
+Download a binary from the [releases](https://github.com/stilvoid/shue/releases) page.
+
+_or_
+
+Run `go install github.com/stilvoid/shue@latest`
 
 ## Usage
 
-    Usage: shue [OPTIONS] [COLOUR] FORMAT
+```
+The following formats can be read and output by shue:
 
-      Converts COLOUR to FORMAT. COLOUR must be in one of the supported formats.
+  Name    Example
+  ---     ---
+  hex3    #123
+  hex4    #1234
+  hex6    #123456
+  hex8    #12345678
+  rgb     rgb(12, 34, 56)
+  rgba    rgba(12, 45, 56, 0.7)
+  hsl     hsl(180, 25%, 50%)
+  hsla    hsla(180, 25%, 50%, 0.75)
 
-    Supported formats:
-      hex:      #rrggbb
-      h3x:      #rgb
-      rgb:      rgb(red, green, blue)
+If the input format contains an alpha value (hex4,hex8,rgba,hsla)
+but the output format does not (hex3,hex6,rgb,hsl)
+then shue will pre-multiply the colour before outputting.
 
-    Options:
-      -l PERCENT    Lighten COLOUR by PERCENT% before converting to FORMAT
-      -i            Invert COLOUR before converting to FORMAT
+Shue can lighten a colour by specifying --lighten with a value 100+
+or darken a colour by specifying a value below 100.
 
-## Building
+If you specify --lighten and --invert, inversion takes place _after_ lightening
 
-Run `go build`.
+Usage:
+  shue COLOUR [flags]
 
-Or you can download a binary from the [releases](https://github.com/stilvoid/shue/releases) page.
+Examples:
+  shue -f rgb 112233
+  shue -f rgb "rgba(12,34,45,0.67)"
+  shue -i "#ff0000"
+  shue -l 150 "hsl(120, 100%, 50%)"
 
-## Examples
-
-Converting a colour to a specific format:
-
-    $ shue -f rgb ff8800
-    rgb(255, 136, 0)
-
-Inverting a colour:
-
-    $ shue -i ff8800
-    #07f
-    #0077ff
-    rgb(0, 119, 255)
-
-Lightening a colour:
-
-    $ shue -l 200 884400
-    #f80
-    #ff8800
-    rgb(255, 136, 0)
-
-Darkening a colour:
-
-    $ shue -l 50 884400
-    #420
-    #442200
-    rgb(68, 34, 0)
+Flags:
+  -f, --format string   Output format. See --help for details (default "all")
+  -h, --help            help for shue
+  -i, --invert          Invert the colour value - lighten is applied first
+  -l, --lighten int     Percentage by which to adjust the brightness (default 100)
+  -v, --version         version for shue
+```
