@@ -6,7 +6,7 @@ before:
     - go test
 
 builds:
-  - main: ./
+  - main: ./cmd/main.go
     binary: shue
     env:
       - CGO_ENABLED=0
