@@ -46,6 +46,10 @@ Shue can lighten a colour by specifying --lighten with a value 100+
 or darken a colour by specifying a value below 100.
 
 If you specify --lighten and --invert, inversion takes place _after_ lightening`,
+	Example: `  shue -f rgb 112233
+  shue -f rgb "rgba(12,34,45,0.67)"
+  shue -i "#ff0000"
+  shue -l 150 "hsl(120, 100%, 50%)"`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		input := args[0]

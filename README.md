@@ -42,6 +42,12 @@ If you specify --lighten and --invert, inversion takes place _after_ lightening
 Usage:
   shue COLOUR [flags]
 
+Examples:
+  shue -f rgb 112233
+  shue -f rgb "rgba(12,34,45,0.67)"
+  shue -i "#ff0000"
+  shue -l 150 "hsl(120, 100%, 50%)"
+
 Flags:
   -f, --format string   Output format. See --help for details (default "all")
   -h, --help            help for shue
